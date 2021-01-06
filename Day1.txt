@@ -1,0 +1,140 @@
+Day 1
+
+Rate Limit
+Before scan program please read scope ,may be rate limite is out of scope or email bombing
+
+before run scan use fack email id or user name and burtforce , if after 10 or 6 request you are not block then you can do attack , until find ratelimite bypass
+
+1)login page 
+2) password reset page
+3)password reset page (user enum)
+4) rooms ,chat , meeting,comment,game rooms,create folder,create user,create list,send mail,send massage,upload,delete account,
+
+
+
+
+https://hackerone.com/reports/751604 Bounty	$500
+
+Steps To Reproduce The Issue
+
+Step 1-Go To This Link https://ucp.nordvpn.com/lost-password
+Enter Email Click On Forget Password
+Step 2- Intercept This Request In Burp And Forward Till You Found Your Number In Request Like {"email":"your email here"}
+Step 3- Now Send This Request To Intruder And Repeat It 100 Time By Fixing Any Arbitrary Payload Which Doesn't No Effect Request I Choose Accept-Language: en-US,en;q=0.$5$
+
+Step 4 - See You Will Get 200 ok Status Code & 100 + Email In Your INBOX
+See It Is Resulting In Mass Mailing Or Email Bombing To Your Users Which Is Bad For Business Impact
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+https://hackerone.com/reports/568832
+
+large number of requests to terminate the victim
+
+POC step:
+1.https://app.crowdsignal.com/quizzes/new
+2.example (https://testedtestsdasad1404.survey.fm/untitled-quiz-1)
+3.Finish quiz send it to Intruder.(Burp suite)
+4.get the payloads ready. Attack with null payloads.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+https://hackerone.com/reports/418151
+No rate limiting in starting up a bot.
+
+
+    Goto https://chaturbate.com/b/username
+    Choose a bot and capture the request.
+    Send to intruder and repeat the step numerous times.
+    I did this 196times 5.I was able to activate a bot numerous times
+    My room was flooded with message which i will show your in the screenshot below. Thanks.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+https://hackerone.com/reports/1029723
+No rate limiting for subscribe email 
+
+Step-by-step Reproduction Instructions:
+
+    Go to url https://stripo.email/ and scrolls look the subscribe button
+    Add the victim emails, and repreat to burp-suite
+    Sent request to burp-intruder, and clear all payloads §
+    In the payloads set a null-payloads and run intruder
+    Boom 1Million request sent to victim-email
+ 
+ //////////////////////////////////////////////////////////////////////////////
+ 
+ https://hackerone.com/reports/77067
+ 
+ No rate limiting for sensitive actions (like "forgot password") enables user enumeration
+ step:
+ 1. Go to forget pasword 
+ 2.fill the email or any 
+ 3. send intruder 
+ 4. check email exist or not (email enum)
+ 
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ https://hackerone.com/reports/385381
+ Rate limit missing at room login
+  where i found ? Meeting, game rooms, any invitation if password number  or string  
+ Steps to reproduce:-
+
+    Create two account A and B. protect A's room with password.
+    Login to B's account and access A's room with random password.
+    Send the request to intruder and run till you get right password
+
+\///////////////////////////////////////////////////////////////////////////////////////////////////////////
+https://hackerone.com/reports/413505
+No rate limit in affiliate statsapi endpoint
+https:// chaturbate.com/affiliates/apistats/?username=hackeronetestchat&token=vulnerable
+I've used my profile and and my token to check brute force
+
+Please check report image
+
+////////////////////////////////////////////////////////////////////////////////////
+https://hackerone.com/reports/280534
+No Rate Limit on account deletion request(Leads to huge email flooding/email bombing)
+
+Steps to reproduce:-
+1.Enter any user mail id by going to https://infogram.com/
+2.generate account deletion email
+3.capture the POST request using proxy(i used burp)
+4.send the POST request to burp intruder
+5.set the pay load to high value
+6.click on start attack
+7.after finishing the attack,go to user mail account and check the inbox
+8.The inbox will be completely bombarded with forgot password emails(See Proof of concept-images)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+https://hackerone.com/reports/230674
+SUMMARY
+
+Hello, while testing your api I have noticed that the request at POST /2/2017-05-22/send_identifier_token does not have any rate limiting (made about 60-70 requests) and this actually sens an SMS when the type is mobile_phone.
+
+I agree, this is not a very big issue, but all endpoints that could be used as spam (and I see you try to respect a lot of guidelines) should have rate limiting. Especially when there is no way to stop the spam and the spam is on the telephone, not email
+POC
+
+POST /2/2017-05-22/send_identifier_token HTTP/1.1
+Host: service-auth.prod.ext.cuvva.co
+Connection: close
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+Content-type: application/json
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.8,de;q=0.6
+Content-Length: 116
+
+{
+    "client_id": "06c92f2c-8bbb-403c-9ee7-3b3b8eb0b30f",
+    "type": "mobile_phone",
+    "value": "+XXXXXXXXXXX"
+}
+
+Replace XXXXXX with a phone number (ex with public sms recieve service : +491628974982).
+
+There is also no validation of the telephone against the email or with any other tokens, so any phone number can be spammed.
+SUGGESTED FIX
+
+    Apply rate limiting
+    (more complicated) Add some sort of : "To stop recieving SMS messages reply STOP"
