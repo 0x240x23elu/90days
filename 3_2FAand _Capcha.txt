@@ -1,0 +1,54 @@
+check remove g-recaptcha-response( response value) and foreword it.
+
+check brutforce 
+
+check null value
+Login to Glassdoor and navigate to https://www.glassdoor.com/member/account/securitySettings_input.htm
+Enable 2FA
+Logout
+Login again and notice OTP is asked
+Now using Burp suite intercept the POST request by sending incorrect code. [Do not forward]
+Before forwarding the request to server, remove the code and forward
+Turnoff Intercept and notice that your login request has been fulfilled
+
+
+check authentication token reuse
+
+disable 2fa without password
+
+
+check you can enable 2fa to another aacount by session or any thing
+
+check domain.com enable 2FA also check on sub domain and user null or 000000 what ever length of password or leangth space or null value
+
+https://medium.com/bugbountywriteup/bypass-2fa-like-a-boss-378787707ba
+
+
+https://medium.com/@jeppe.b.weikop/2fa-bypass-via-logical-rate-limiting-bypass-25ae2a4e1835
+
+https://medium.com/sourav-sahana/bypass-2fa-in-a-website-d616eaead1e3
+
+Disable 2FA using CSRF file. But I have seen that there is token is generated in the CSRF poc. But when I tried this html file that token is never get expired. This token is used again and again to disable 2FA on another Account.
+
+Note : Always try to Disable 2FA using CSRF Attack.
+
+Steps to Reproduce the Vulnerability
+Go to https://pandao.ru/profile/settings and sign up for two accounts. In which first is attackers account and second is Victim’s
+Log in to Attackers account and capture the Disable 2FA request in Burp suite and generate CSRF poc.
+Save the CSRF poc file with extension .HTML.
+Now log in into Victim’s account in Private Browser and fire that CSRF file. Now you can see that It disable 2FA which leads to 2FA Bypass.
+
+
+I enabled the 2FA.
+After enabling 2FA, i got some backup codes in case i don’t have access to my device for the TOTP.
+I have noted all the backup codes. The backup codes were of 8 digits.
+I logged out of the application to test the 2fa. :P
+So after entering the email address and password.
+I was asked to enter the TOTP. But there was option to login to the application using the backup codes.
+I clicked on it. And intentionally, put a random 8 digit number instead of that 8 digit backup code and to my surprise,
+it was accepted and i was successfully logged in to the application!
+In short, there was no validation for the backup code. They were not validated and hence any random 8 digit would work.
+
+
+check with enable 2fa and disable account and reenable check it is asking 2fa or not
+https://bugbountypoc.com/instagram-account-is-reactivated-without-entering-2fa/

